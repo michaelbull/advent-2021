@@ -1,24 +1,55 @@
 package com.github.michaelbull.advent2021.day1
 
+import com.github.michaelbull.advent2021.day1.Day1.part1
+import com.github.michaelbull.advent2021.day1.Day1.part2
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class Day1Test {
 
     @Test
-    fun `answer`() {
-        val input = Day1.parse()
-        assertEquals(1123, Day1.Part1(input))
-        assertEquals(10123, Day1.Part2(input))
+    fun `example 1`() {
+        val input = """
+            199
+            200
+            208
+            210
+            200
+            207
+            240
+            269
+            260
+            263
+        """
+
+        assertEquals(7, Day1.solve(::part1, input))
     }
 
     @Test
-    fun `part 1`() {
-        assertEquals(1001, Day1.Part1("1"))
+    fun `answer 1`() {
+        assertEquals(1713, Day1.solve(::part1))
     }
 
     @Test
-    fun `part 2`() {
-        assertEquals(10002, Day1.Part2("2"))
+    fun `example 2`() {
+        val input = """
+            199
+            200
+            208
+            210
+            200
+            207
+            240
+            269
+            260
+            263
+        """
+
+        assertEquals(5, Day1.solve(::part2, input))
+    }
+
+    @Test
+    fun `answer 2`() {
+        assertEquals(1734, Day1.solve(::part2))
     }
 }

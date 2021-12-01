@@ -20,11 +20,9 @@ private fun <T : Any, V : Any> Puzzle<T, V>.solve() {
     println("")
     println("Day ${day}:")
 
-    val input = parse()
-
     for ((index, solution) in solutions().withIndex()) {
         val answer = measureTimedValue {
-            solution(input)
+            solve(solution)
         }
 
         println("  part ${index + 1} (took ${answer.duration}): ${answer.value}")
