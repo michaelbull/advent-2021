@@ -2,23 +2,21 @@ package com.github.michaelbull.advent2021.day4
 
 import com.github.michaelbull.advent2021.math.Vector2
 
-private val COLUMN_REGEX = "(\\d+)+".toRegex()
+private val ROW_REGEX = "(\\d+)+".toRegex()
 
-private fun List<String>.toCells(): Map<Vector2, Int> {
-    return flatMapIndexed { rowIndex, row ->
-        val values = COLUMN_REGEX.findAll(row).map { it.value.toInt() }
+fun Iterator<String>.toBingoBoard(size: Int): BingoBoard {
+    val cells = buildMap {
+        repeat(size) { rowIndex ->
+            val row = this@toBingoBoard.next()
+            val values = ROW_REGEX.findAll(row).map { it.value.toInt() }
 
-        values.mapIndexed { columnIndex, value ->
-            Vector2(columnIndex, rowIndex) to value
+            values.forEachIndexed { columnIndex, value ->
+                set(Vector2(columnIndex, rowIndex), value)
+            }
         }
-    }.toMap()
-}
+    }
 
-fun List<String>.toBingoBoards(size: Int): List<BingoBoard> {
-    return filter(String::isNotBlank)
-        .windowed(size, size)
-        .map { BingoBoard(it.toCells()) }
-        .toList()
+    return BingoBoard(cells)
 }
 
 data class BingoBoard(

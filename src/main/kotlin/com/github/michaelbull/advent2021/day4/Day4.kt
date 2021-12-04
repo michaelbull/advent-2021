@@ -16,9 +16,20 @@ object Day4 : Puzzle<Day4.Input, Int>(day = 4) {
     }
 
     override fun parse(input: Sequence<String>): Input {
-        val lines = input.toList()
-        val draws = lines.take(1).single().split(",").map(String::toInt).toDraws()
-        val boards = lines.drop(1).toBingoBoards(size = 5)
+        val it = input.iterator()
+
+        val draws = it.next()
+            .split(",")
+            .map(String::toInt)
+            .toDraws()
+
+        val boards = buildList {
+            while (it.hasNext()) {
+                require(it.next().isEmpty())
+                add(it.toBingoBoard(size = 5))
+            }
+        }
+
         return Input(draws, boards)
     }
 
