@@ -2,19 +2,24 @@ package com.github.michaelbull.advent2021.day4
 
 import com.github.michaelbull.advent2021.Puzzle
 
-private fun List<Int>.toDraws(): List<List<Int>> {
-    return mapIndexed { i1, value ->
-        filterIndexed { i2, _ -> i2 < i1 } + value
+object Day4 : Puzzle<Day4.Input, Int>(day = 4) {
+
+    data class Input(
+        val draws: List<List<Int>>,
+        val boards: List<BingoBoard>
+    )
+
+    private fun List<Int>.toDraws(): List<List<Int>> {
+        return mapIndexed { i1, value ->
+            filterIndexed { i2, _ -> i2 < i1 } + value
+        }
     }
-}
 
-object Day4 : Puzzle<Day4Input, Int>(day = 4) {
-
-    override fun parse(input: Sequence<String>): Day4Input {
+    override fun parse(input: Sequence<String>): Input {
         val lines = input.toList()
         val draws = lines.take(1).single().split(",").map(String::toInt).toDraws()
         val boards = lines.drop(1).toBingoBoards(size = 5)
-        return Day4Input(draws, boards)
+        return Input(draws, boards)
     }
 
     override fun solutions() = listOf(
@@ -22,7 +27,7 @@ object Day4 : Puzzle<Day4Input, Int>(day = 4) {
         ::part2
     )
 
-    fun part1(input: Day4Input): Int {
+    fun part1(input: Input): Int {
         val (draws, boards) = input
 
         for (draw in draws) {
@@ -36,7 +41,7 @@ object Day4 : Puzzle<Day4Input, Int>(day = 4) {
         error("no winning board")
     }
 
-    fun part2(input: Day4Input): Int {
+    fun part2(input: Input): Int {
         val (draws, boards) = input
         val winners = mutableSetOf<BingoBoard>()
 
