@@ -3,7 +3,7 @@ package com.github.michaelbull.advent2021.math
 data class Vector2(
     val x: Int = 0,
     val y: Int = 0
-) {
+) : Comparable<Vector2> {
 
     operator fun plus(amount: Int): Vector2 {
         return copy(
@@ -59,6 +59,20 @@ data class Vector2(
             x = this.x / other.x,
             y = this.y / other.y
         )
+    }
+
+    operator fun rangeTo(other: Vector2): Vector2Range {
+        return Vector2Range(this, other)
+    }
+
+    override fun compareTo(other: Vector2): Int {
+        return when {
+            x < other.x -> -1
+            x > other.x -> +1
+            y < other.y -> -1
+            y > other.y -> +1
+            else -> 0
+        }
     }
 
     companion object {
