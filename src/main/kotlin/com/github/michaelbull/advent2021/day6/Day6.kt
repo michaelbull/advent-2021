@@ -2,9 +2,9 @@ package com.github.michaelbull.advent2021.day6
 
 import com.github.michaelbull.advent2021.Puzzle
 
-object Day6 : Puzzle<List<Long>, Long>(day = 6) {
-    override fun parse(input: Sequence<String>): List<Long> {
-        return input.first().toLanternfishTimers()
+object Day6 : Puzzle<LanternfishSchool, Long>(day = 6) {
+    override fun parse(input: Sequence<String>): LanternfishSchool {
+        return input.first().toLanternfishSchool()
     }
 
     override fun solutions() = listOf(
@@ -12,11 +12,11 @@ object Day6 : Puzzle<List<Long>, Long>(day = 6) {
         ::part2
     )
 
-    fun part1(input: List<Long>): Long {
-        return input.lanternfishAliveAfter(days = 80)
+    fun part1(school: LanternfishSchool): Long {
+        return school.countAt(days = 80)
     }
 
-    fun part2(input: List<Long>): Long {
-        return input.lanternfishAliveAfter(days = 256)
+    fun part2(school: LanternfishSchool): Long {
+        return school.countAt(days = 256)
     }
 }
