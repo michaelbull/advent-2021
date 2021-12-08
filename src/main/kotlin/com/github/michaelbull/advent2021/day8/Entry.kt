@@ -26,16 +26,17 @@ data class Entry(
         }
 
     val outputValue: Int
-        get() = outputValueDigits.fold(0.toInt()) { acc, digit ->
+        get() = outputValueDigits.fold(0) { acc, digit ->
             (10 * acc) + valueOf(digit)
         }
 
-    private val charsBySegment: Map<Int, Set<Char>>
-        get() = SEGMENTS_BY_DIGIT.keys.associateWith { digit ->
+    private val patternsByDigit: Map<Int, Set<Char>> by lazy {
+        DIGITS.associateWith { digit ->
             val segments = SEGMENTS_BY_DIGIT[digit]
             val pattern = signalPatterns.find { it.length == segments }
             pattern?.toSet() ?: emptySet()
         }
+    }
 
     private fun valueOf(digit: String): Int {
         return when (val segments = digit.length) {
@@ -54,7 +55,8 @@ data class Entry(
     }
 
     private fun String.intersectingChars(digit: Int): Int {
-        return toSet().intersect(charsBySegment.getValue(digit)).size
+        val pattern = patternsByDigit.getValue(digit)
+        return toSet().intersect(pattern).size
     }
 
     private companion object {
@@ -70,6 +72,8 @@ data class Entry(
             8 to 7,
             9 to 6
         )
+
+        private val DIGITS = SEGMENTS_BY_DIGIT.keys
 
         private val DISTINCT_SEGMENTS_BY_DIGIT = SEGMENTS_BY_DIGIT.filter { a ->
             SEGMENTS_BY_DIGIT.count { b ->
