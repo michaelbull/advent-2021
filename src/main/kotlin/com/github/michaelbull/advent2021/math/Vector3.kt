@@ -1,10 +1,16 @@
 package com.github.michaelbull.advent2021.math
 
+fun Triple<Int, Int, Int>.toVector3(): Vector3 {
+    return Vector3(this)
+}
+
 data class Vector3(
     val x: Int = 0,
     val y: Int = 0,
     val z: Int = 0
 ) {
+
+    constructor(triple: Triple<Int, Int, Int>) : this(triple.first, triple.second, triple.third)
 
     operator fun plus(amount: Int): Vector3 {
         return copy(

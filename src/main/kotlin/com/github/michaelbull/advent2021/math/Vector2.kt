@@ -1,9 +1,15 @@
 package com.github.michaelbull.advent2021.math
 
+fun Pair<Int, Int>.toVector2(): Vector2 {
+    return Vector2(this)
+}
+
 data class Vector2(
     val x: Int = 0,
     val y: Int = 0
 ) : Comparable<Vector2> {
+
+    constructor(pair: Pair<Int, Int>) : this(pair.first, pair.second)
 
     operator fun plus(amount: Int): Vector2 {
         return copy(
