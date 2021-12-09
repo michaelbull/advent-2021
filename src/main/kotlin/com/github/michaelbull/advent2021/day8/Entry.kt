@@ -1,6 +1,8 @@
 package com.github.michaelbull.advent2021.day8
 
-private val REGEX = "([a-g]+)".toRegex()
+private val DIGITS = 0..9
+private val SEGMENTS = 'a'..'g'
+private val REGEX = "([${SEGMENTS.first}-${SEGMENTS.last}]+)".toRegex()
 
 fun String.toEntry(): Entry {
     val results = requireNotNull(REGEX.findAll(this)) {
@@ -21,8 +23,8 @@ data class Entry(
 ) {
 
     val distinctDigitCount: Int
-        get() = outputValueDigits.sumOf { digit ->
-            if (digit.length in DISTINCT_SEGMENTS) 1 else 0.toInt()
+        get() = outputValueDigits.count { digit ->
+            digit.length in DISTINCT_SEGMENT_SIZES
         }
 
     val outputValue: Int
@@ -32,14 +34,14 @@ data class Entry(
 
     private val patternsByDigit: Map<Int, Set<Char>> by lazy {
         DIGITS.associateWith { digit ->
-            val segments = SEGMENTS_BY_DIGIT[digit]
-            val pattern = signalPatterns.find { it.length == segments }
+            val segmentSize = SEGMENT_SIZES_BY_DIGIT[digit]
+            val pattern = signalPatterns.find { it.length == segmentSize }
             pattern?.toSet() ?: emptySet()
         }
     }
 
     private fun valueOf(digit: String): Int {
-        return when (val segments = digit.length) {
+        return when (val segmentSize = digit.length) {
             5 -> when {
                 digit.intersectingChars(1) == 2 -> 3
                 digit.intersectingChars(4) == 2 -> 2
@@ -50,7 +52,7 @@ data class Entry(
                 digit.intersectingChars(1) == 2 -> 0
                 else -> 6
             }
-            else -> DIGITS_BY_DISTINCT_SEGMENTS[segments] ?: throw IllegalArgumentException()
+            else -> DIGITS_BY_DISTINCT_SEGMENT_SIZE[segmentSize] ?: throw IllegalArgumentException()
         }
     }
 
@@ -60,23 +62,26 @@ data class Entry(
     }
 
     private companion object {
+
         private val SEGMENTS_BY_DIGIT = mapOf(
-            0 to 6,
-            1 to 2,
-            2 to 5,
-            3 to 5,
-            4 to 4,
-            5 to 5,
-            6 to 6,
-            7 to 3,
-            8 to 7,
-            9 to 6
+            0 to setOf('a', 'b', 'c', 'e', 'f', 'g'),
+            1 to setOf('c', 'f'),
+            2 to setOf('a', 'c', 'd', 'e', 'g'),
+            3 to setOf('a', 'c', 'd', 'f', 'g'),
+            4 to setOf('b', 'c', 'd', 'f'),
+            5 to setOf('a', 'b', 'd', 'f', 'g'),
+            6 to setOf('a', 'b', 'd', 'e', 'f', 'g'),
+            7 to setOf('a', 'c', 'f'),
+            8 to setOf('a', 'b', 'c', 'd', 'e', 'f', 'g'),
+            9 to setOf('a', 'b', 'c', 'd', 'f', 'g')
         )
 
-        private val DIGITS = SEGMENTS_BY_DIGIT.keys
+        private val SEGMENT_SIZES_BY_DIGIT = DIGITS.associateWith { digit ->
+            SEGMENTS_BY_DIGIT.getValue(digit).size
+        }
 
-        private val DISTINCT_SEGMENTS_BY_DIGIT = SEGMENTS_BY_DIGIT.filter { a ->
-            SEGMENTS_BY_DIGIT.count { b ->
+        private val DISTINCT_SEGMENT_SIZES_BY_DIGIT = SEGMENT_SIZES_BY_DIGIT.filter { a ->
+            SEGMENT_SIZES_BY_DIGIT.count { b ->
                 a.value == b.value
             } == 1
         }
@@ -85,8 +90,8 @@ data class Entry(
             return entries.associateBy(Map.Entry<K, V>::value, Map.Entry<K, V>::key)
         }
 
-        private val DISTINCT_SEGMENTS = DISTINCT_SEGMENTS_BY_DIGIT.values
+        private val DISTINCT_SEGMENT_SIZES = DISTINCT_SEGMENT_SIZES_BY_DIGIT.values
 
-        private val DIGITS_BY_DISTINCT_SEGMENTS = DISTINCT_SEGMENTS_BY_DIGIT.reversed()
+        private val DIGITS_BY_DISTINCT_SEGMENT_SIZE = DISTINCT_SEGMENT_SIZES_BY_DIGIT.reversed()
     }
 }
