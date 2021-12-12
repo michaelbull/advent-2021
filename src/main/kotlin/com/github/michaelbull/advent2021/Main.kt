@@ -3,6 +3,7 @@ package com.github.michaelbull.advent2021
 import com.github.michaelbull.advent2021.day1.Day1
 import com.github.michaelbull.advent2021.day10.Day10
 import com.github.michaelbull.advent2021.day11.Day11
+import com.github.michaelbull.advent2021.day12.Day12
 import com.github.michaelbull.advent2021.day2.Day2
 import com.github.michaelbull.advent2021.day3.Day3
 import com.github.michaelbull.advent2021.day4.Day4
@@ -27,7 +28,8 @@ fun main() {
         Day8,
         Day9,
         Day10,
-        Day11
+        Day11,
+        Day12
     )
 
     for (puzzle in puzzles) {
