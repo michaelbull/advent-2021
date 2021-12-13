@@ -1,6 +1,7 @@
 package com.github.michaelbull.advent2021.day5
 
 import com.github.michaelbull.advent2021.math.Vector2
+import com.github.michaelbull.advent2021.math.Vector2Iterator
 import com.github.michaelbull.advent2021.math.Vector2Range
 
 data class VentGrid(
@@ -12,8 +13,8 @@ data class VentGrid(
 
 fun Sequence<Vector2Range>.toVentGrid(): VentGrid {
     val cells = buildMap<Vector2, Int> {
-        this@toVentGrid.forEach { ventLine ->
-            ventLine.forEach { coordinate ->
+        for (ventLine in this@toVentGrid) {
+            for (coordinate in ventLine.iterator()) {
                 val current = getOrDefault(coordinate, 0)
                 set(coordinate, current + 1)
             }
@@ -23,46 +24,16 @@ fun Sequence<Vector2Range>.toVentGrid(): VentGrid {
     return VentGrid(cells)
 }
 
-private inline fun Vector2Range.forEach(action: (Vector2) -> Unit) {
-    when {
-        horizontal -> forEachHorizontally(action)
-        vertical -> forEachVertically(action)
-        diagonal -> forEachDiagonally(action)
+private fun Vector2Range.iterator(): Iterator<Vector2> {
+    val xStep = if (start.x <= endInclusive.x) 1 else -1
+    val yStep = if (start.y <= endInclusive.y) 1 else -1
+
+    val step = when {
+        isHorizontal -> Vector2(0, yStep)
+        isVertical -> Vector2(xStep, 0)
+        isDiagonal -> Vector2(xStep, yStep)
+        else -> throw IllegalStateException()
     }
-}
 
-private inline fun Vector2Range.forEachHorizontally(action: (Vector2) -> Unit) {
-    return yRange
-        .map { Vector2(start.x, it) }
-        .forEach(action)
-}
-
-private inline fun Vector2Range.forEachVertically(action: (Vector2) -> Unit) {
-    return xRange
-        .map { Vector2(it, start.y) }
-        .forEach(action)
-}
-
-private inline fun Vector2Range.forEachDiagonally(action: (Vector2) -> Unit) {
-    val xPositive = start.x <= endInclusive.x
-    val xRange = if (xPositive) xMin..xMax else xMax..xMin
-    val xStep = if (xPositive) +1 else -1
-
-    val yPositive = start.y <= endInclusive.y
-    val yRange = if (yPositive) yMin..yMax else yMax..yMin
-    val yStep = if (yPositive) +1 else -1
-
-    var x = xRange.first
-    var y = yRange.first
-
-    while (true) {
-        action(Vector2(x, y))
-
-        if (x == xRange.last && y == yRange.last) {
-            break
-        } else {
-            x += xStep
-            y += yStep
-        }
-    }
+    return Vector2Iterator(start, endInclusive, step)
 }

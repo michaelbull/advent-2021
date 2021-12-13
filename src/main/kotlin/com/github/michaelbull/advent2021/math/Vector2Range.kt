@@ -9,13 +9,13 @@ data class Vector2Range(
     override val endInclusive: Vector2
 ) : ClosedRange<Vector2> {
 
-    val horizontal: Boolean
+    val isHorizontal: Boolean
         get() = start.x == endInclusive.x
 
-    val vertical: Boolean
+    val isVertical: Boolean
         get() = start.y == endInclusive.y
 
-    val diagonal: Boolean
+    val isDiagonal: Boolean
         get() = xDelta == yDelta
 
     val xRange: IntRange

@@ -16,14 +16,14 @@ object Day5 : Puzzle<Sequence<Vector2Range>, Int>(day = 5) {
 
     fun part1(lines: Sequence<Vector2Range>): Int {
         return lines
-            .filter { it.horizontal || it.vertical }
+            .filter { it.isHorizontal || it.isVertical }
             .toVentGrid()
             .overlaps
     }
 
     fun part2(lines: Sequence<Vector2Range>): Int {
         return lines
-            .filter { it.horizontal || it.vertical || it.diagonal }
+            .filter { it.isHorizontal || it.isVertical || it.isDiagonal }
             .toVentGrid()
             .overlaps
     }
