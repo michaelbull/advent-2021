@@ -1,5 +1,8 @@
 package com.github.michaelbull.advent2021
 
+import kotlin.time.Duration
+import kotlin.time.measureTimedValue
+
 typealias Solution<T, V> = (input: T) -> V
 
 abstract class Puzzle<T : Any, V : Any>(val day: Int) {
@@ -12,14 +15,26 @@ abstract class Puzzle<T : Any, V : Any>(val day: Int) {
     }
 
     fun solve(solution: Solution<T, V>): V {
-        val input = Puzzle::class.java.getResourceAsStream("day$day.txt")
+        return solveTimed(solution).third
+    }
 
-        if (input == null) {
+    fun solveTimed(solution: Solution<T, V>): Triple<Duration, Duration, V> {
+        val stream = Puzzle::class.java.getResourceAsStream("day$day.txt")
+
+        if (stream == null) {
             error("No input file found for day $day")
         } else {
-            return input
-                .bufferedReader()
-                .useLines { solution(parse(it)) }
+            return stream.bufferedReader().useLines { lines ->
+                val timedInput = measureTimedValue {
+                    parse(lines)
+                }
+
+                val timedAnswer = measureTimedValue {
+                    solution(timedInput.value)
+                }
+
+                Triple(timedInput.duration, timedAnswer.duration, timedAnswer.value)
+            }
         }
     }
 }

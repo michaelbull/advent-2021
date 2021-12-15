@@ -15,10 +15,7 @@ import com.github.michaelbull.advent2021.day6.Day6
 import com.github.michaelbull.advent2021.day7.Day7
 import com.github.michaelbull.advent2021.day8.Day8
 import com.github.michaelbull.advent2021.day9.Day9
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTimedValue
 
-@ExperimentalTime
 fun main() {
     val puzzles = listOf<Puzzle<*, *>>(
         Day1,
@@ -43,16 +40,15 @@ fun main() {
     }
 }
 
-@ExperimentalTime
 private fun <T : Any, V : Any> Puzzle<T, V>.solve() {
     println("")
     println("Day ${day}:")
 
     for ((index, solution) in solutions().withIndex()) {
-        val answer = measureTimedValue {
-            solve(solution)
-        }
-
-        println("  part ${index + 1} (took ${answer.duration}): ${answer.value}")
+        val (parseDuration, answerDuration, answer) = solveTimed(solution)
+        println("  part ${index + 1}:")
+        println("    parsing took: $parseDuration")
+        println("    solving took: $answerDuration")
+        println("    answer: $answer")
     }
 }

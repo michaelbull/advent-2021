@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 group = "com.michael-bull.advent"
 version = "1.0-SNAPSHOT"
 
@@ -23,5 +25,9 @@ application {
 tasks {
     test {
         useJUnitPlatform()
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.time.ExperimentalTime"
     }
 }
