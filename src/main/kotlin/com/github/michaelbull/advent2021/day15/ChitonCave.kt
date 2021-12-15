@@ -1,12 +1,13 @@
 package com.github.michaelbull.advent2021.day15
 
 import com.github.michaelbull.advent2021.math.Vector2
+import com.github.michaelbull.advent2021.math.Vector2IntMap
 import java.util.PriorityQueue
 
 private val RISK_RANGE = 1..9
 
 fun Sequence<String>.toChitonCave(): ChitonCave {
-    val riskLevels = buildMap {
+    val map = buildMap {
         for ((y, line) in this@toChitonCave.withIndex()) {
             for ((x, char) in line.withIndex()) {
                 val position = Vector2(x, y)
@@ -21,69 +22,63 @@ fun Sequence<String>.toChitonCave(): ChitonCave {
         }
     }
 
+    val width = map.keys.maxOf(Vector2::x) + 1
+    val height = map.keys.maxOf(Vector2::y) + 1
+    val riskLevels = Vector2IntMap(width, height, map::getValue)
+
     return ChitonCave(riskLevels)
 }
 
 data class ChitonCave(
-    val riskLevels: Map<Vector2, Int>
+    val riskLevels: Vector2IntMap
 ) {
 
-    val xMin: Int
-        get() = riskLevels.keys.minOf(Vector2::x)
-
-    val yMin: Int
-        get() = riskLevels.keys.minOf(Vector2::y)
-
-    val xMax: Int
-        get() = riskLevels.keys.maxOf(Vector2::x)
-
-    val yMax: Int
-        get() = riskLevels.keys.maxOf(Vector2::y)
-
     val topLeft: Vector2
-        get() = Vector2(xMin, yMin)
+        get() = Vector2.ZERO
 
     val bottomRight: Vector2
-        get() = Vector2(xMax, yMax)
+        get() = Vector2(riskLevels.width - 1, riskLevels.height - 1)
 
     fun lowestTotalRisk(from: Vector2, to: Vector2): Int {
-        val lowestRiskLevels = mutableMapOf(from to 0)
+        val lowestRiskLevels = Vector2IntMap(riskLevels.width, riskLevels.height) {
+            if (it == from) 0 else Int.MAX_VALUE
+        }
+
         val queue = PriorityQueue(compareBy(lowestRiskLevels::get))
 
         queue += from
 
         while (queue.isNotEmpty()) {
             val position = queue.poll()
-            val lowestRiskLevel = lowestRiskLevels.getValue(position)
+            val lowestRiskLevel = lowestRiskLevels[position]
 
             for ((adjacentPosition, adjacentRiskLevel) in adjacentRiskLevels(position)) {
                 val lowestAdjacentRiskLevel = lowestRiskLevels[adjacentPosition]
                 val cumulativeRiskLevel = lowestRiskLevel + adjacentRiskLevel
 
-                if (lowestAdjacentRiskLevel == null || cumulativeRiskLevel < lowestAdjacentRiskLevel) {
+                if (cumulativeRiskLevel < lowestAdjacentRiskLevel) {
                     lowestRiskLevels[adjacentPosition] = cumulativeRiskLevel
                     queue += adjacentPosition
                 }
             }
         }
 
-        return lowestRiskLevels.getValue(to)
+        return lowestRiskLevels[to]
     }
 
     fun expand(times: Int): ChitonCave {
-        val range = 0 until times
-        val width = (xMax - xMin) + 1
-        val height = (yMax - yMin) + 1
+        val width = riskLevels.width
+        val height = riskLevels.height
 
-        val expandedRiskLevels = range.flatMap { x ->
-            range.flatMap { y ->
-                riskLevels.map { (position, riskLevel) ->
-                    val expandedPosition = position + Vector2(x * width, y * height)
-                    val expandedRiskLevel = ((riskLevel - 1 + x + y) % RISK_RANGE.last) + RISK_RANGE.first
-                    expandedPosition to expandedRiskLevel
-                }
-            }
-        }.toMap()
+        val expandedWidth = width * times
+        val expandedHeight = height * times
+
+        val expandedRiskLevels = Vector2IntMap(expandedWidth, expandedHeight) { position ->
+            val base = position / Vector2(width, height)
+            val local = position % Vector2(width, height)
+            val riskLevel = riskLevels[local]
+            ((riskLevel - 1 + base.x + base.y) % RISK_RANGE.last) + RISK_RANGE.first
+        }
 
         return copy(riskLevels = expandedRiskLevels)
     }
@@ -92,7 +87,7 @@ data class ChitonCave(
         return ADJACENT_OFFSETS
             .map { position + it }
             .filter { it in riskLevels }
-            .associateWith(riskLevels::getValue)
+            .associateWith(riskLevels::get)
     }
 
     private companion object {

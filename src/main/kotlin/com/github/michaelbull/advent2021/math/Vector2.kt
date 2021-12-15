@@ -67,6 +67,20 @@ data class Vector2(
         )
     }
 
+    operator fun rem(amount: Int): Vector2 {
+        return copy(
+            x = this.x % amount,
+            y = this.y % amount
+        )
+    }
+
+    operator fun rem(other: Vector2): Vector2 {
+        return copy(
+            x = this.x % other.x,
+            y = this.y % other.y
+        )
+    }
+
     operator fun rangeTo(other: Vector2): Vector2Range {
         return Vector2Range(this, other)
     }
