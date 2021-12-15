@@ -1,6 +1,10 @@
 package com.github.michaelbull.advent2021.day9
 
 import com.github.michaelbull.advent2021.math.Vector2
+import com.github.michaelbull.advent2021.math.Vector2.Companion.EAST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.NORTH
+import com.github.michaelbull.advent2021.math.Vector2.Companion.SOUTH
+import com.github.michaelbull.advent2021.math.Vector2.Companion.WEST
 
 fun Sequence<String>.toHeightMap(): HeightMap {
     val lines = this
@@ -74,11 +78,11 @@ data class HeightMap(
     private companion object {
         private val HEIGHT_RANGE = 0..9
 
-        private val ADJACENT_OFFSETS = listOf(
-            +1 to +0,
-            +0 to +1,
-            -1 to +0,
-            +0 to -1
-        ).map(::Vector2)
+        private val ADJACENT_OFFSETS = setOf(
+            NORTH,
+            EAST,
+            SOUTH,
+            WEST
+        )
     }
 }

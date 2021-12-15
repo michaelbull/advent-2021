@@ -1,6 +1,14 @@
 package com.github.michaelbull.advent2021.day11
 
 import com.github.michaelbull.advent2021.math.Vector2
+import com.github.michaelbull.advent2021.math.Vector2.Companion.NORTH
+import com.github.michaelbull.advent2021.math.Vector2.Companion.NORTH_EAST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.EAST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.SOUTH_EAST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.SOUTH
+import com.github.michaelbull.advent2021.math.Vector2.Companion.SOUTH_WEST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.WEST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.NORTH_WEST
 
 fun Sequence<String>.toGrid(): Grid {
     val cells = buildMap {
@@ -107,15 +115,15 @@ data class Grid(
     private companion object {
         private val ENERGY_RANGE = 0..9
 
-        private val ADJACENT_OFFSETS = listOf(
-            +0 to +1, /* north */
-            +1 to +1, /* north east */
-            +1 to +0, /* east */
-            +1 to -1, /* south east */
-            +0 to -1, /* south */
-            -1 to -1, /* south west */
-            -1 to +0, /* west */
-            -1 to +1, /* north west */
-        ).map(::Vector2)
+        private val ADJACENT_OFFSETS = setOf(
+            NORTH,
+            NORTH_EAST,
+            EAST,
+            SOUTH_EAST,
+            SOUTH,
+            SOUTH_WEST,
+            WEST,
+            NORTH_WEST
+        )
     }
 }

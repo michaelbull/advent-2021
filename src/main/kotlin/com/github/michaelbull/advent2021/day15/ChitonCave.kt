@@ -1,6 +1,10 @@
 package com.github.michaelbull.advent2021.day15
 
 import com.github.michaelbull.advent2021.math.Vector2
+import com.github.michaelbull.advent2021.math.Vector2.Companion.EAST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.NORTH
+import com.github.michaelbull.advent2021.math.Vector2.Companion.SOUTH
+import com.github.michaelbull.advent2021.math.Vector2.Companion.WEST
 import com.github.michaelbull.advent2021.math.Vector2IntMap
 import java.util.PriorityQueue
 
@@ -92,10 +96,10 @@ data class ChitonCave(
 
     private companion object {
         private val ADJACENT_OFFSETS = setOf(
-            +0 to +1, /* north */
-            +1 to +0, /* east */
-            +0 to -1, /* south */
-            -1 to +0, /* west */
-        ).map(::Vector2)
+            NORTH,
+            EAST,
+            SOUTH,
+            WEST
+        )
     }
 }

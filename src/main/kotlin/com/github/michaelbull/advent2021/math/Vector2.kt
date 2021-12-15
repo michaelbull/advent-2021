@@ -97,5 +97,13 @@ data class Vector2(
 
     companion object {
         val ZERO = Vector2(0, 0)
+        val NORTH = Vector2(0, 1)
+        val NORTH_EAST = Vector2(1, 1)
+        val EAST = Vector2(1, 0)
+        val SOUTH_EAST = Vector2(1, -1)
+        val SOUTH = Vector2(0, -1)
+        val SOUTH_WEST = Vector2(-1, -1)
+        val WEST = Vector2(-1, 0)
+        val NORTH_WEST = Vector2(-1, 1)
     }
 }
