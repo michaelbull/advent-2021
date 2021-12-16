@@ -7,5 +7,8 @@ enum class OperatorType(val id: Int) {
     MAXIMUM(3),
     GREATER_THAN(5),
     LESS_THAN(6),
-    EQUAL_TO(7),
+    EQUAL_TO(7)
 }
+
+val OPERATOR_TYPES = OperatorType.values()
+val OPERATOR_TYPES_BY_ID = OPERATOR_TYPES.associateBy(OperatorType::id)
