@@ -13,7 +13,7 @@ fun Sequence<String>.toVentLines(): Sequence<Vector2Range> {
 
         val (start, endInclusive) = result.groupValues.drop(1)
             .map(String::toInt)
-            .windowed(2, 2)
+            .chunked(2)
             .map { (x, y) -> Vector2(x, y) }
 
         Vector2Range(start, endInclusive)
