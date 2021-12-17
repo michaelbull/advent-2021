@@ -1,6 +1,7 @@
 package com.github.michaelbull.advent2021.day7
 
 import com.github.michaelbull.advent2021.Puzzle
+import com.github.michaelbull.advent2021.math.triangular
 import kotlin.math.abs
 
 private typealias FuelRate = (Int) -> Int
@@ -23,7 +24,7 @@ object Day7 : Puzzle<List<Int>, Int>(day = 7) {
     }
 
     fun part2(positions: List<Int>): Int {
-        return positions.cheapestMove(::linearRate)
+        return positions.cheapestMove(::triangularRate)
     }
 
     private inline fun List<Int>.cheapestMove(fuelRate: FuelRate): Int {
@@ -39,8 +40,8 @@ object Day7 : Puzzle<List<Int>, Int>(day = 7) {
         }
     }
 
-    private fun linearRate(distance: Int): Int {
-        return (distance * (distance + 1)) / 2
+    private fun triangularRate(distance: Int): Int {
+        return triangular(distance)
     }
 
     private fun constantRate(distance: Int): Int {
