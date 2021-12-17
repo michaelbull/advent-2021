@@ -105,5 +105,19 @@ data class Vector2(
         val SOUTH_WEST = Vector2(-1, -1)
         val WEST = Vector2(-1, 0)
         val NORTH_WEST = Vector2(-1, 1)
+
+        val CARDINAL_DIRECTIONS = setOf(
+            NORTH,
+            EAST,
+            SOUTH,
+            WEST
+        )
+
+        val ORDINAL_DIRECTIONS = setOf(
+            NORTH_EAST,
+            SOUTH_EAST,
+            SOUTH_WEST,
+            NORTH_WEST
+        )
     }
 }

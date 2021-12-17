@@ -23,8 +23,11 @@ data class Probe(
     }
 
     infix fun landsIn(targetArea: Vector2Range): Boolean {
+        val lastX = targetArea.xRange.last
+        val firstY = targetArea.yRange.first
+
         return stepSequence()
-            .takeWhile { it.position.x <= targetArea.xRange.last && it.position.y >= targetArea.yRange.first }
+            .takeWhile { it.position.x <= lastX && it.position.y >= firstY }
             .any { it.position in targetArea }
     }
 

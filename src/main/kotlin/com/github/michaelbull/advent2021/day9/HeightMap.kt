@@ -1,10 +1,7 @@
 package com.github.michaelbull.advent2021.day9
 
 import com.github.michaelbull.advent2021.math.Vector2
-import com.github.michaelbull.advent2021.math.Vector2.Companion.EAST
-import com.github.michaelbull.advent2021.math.Vector2.Companion.NORTH
-import com.github.michaelbull.advent2021.math.Vector2.Companion.SOUTH
-import com.github.michaelbull.advent2021.math.Vector2.Companion.WEST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.CARDINAL_DIRECTIONS
 
 fun Sequence<String>.toHeightMap(): HeightMap {
     val lines = this
@@ -36,8 +33,8 @@ data class HeightMap(
     }
 
     private fun adjacentHeights(position: Vector2): List<Int> {
-        return ADJACENT_OFFSETS.mapNotNull { offset ->
-            heights[position + offset]
+        return CARDINAL_DIRECTIONS.mapNotNull { direction ->
+            heights[position + direction]
         }
     }
 
@@ -62,8 +59,8 @@ data class HeightMap(
             if (isBasin(candidate) && candidate !in visited) {
                 visited += candidate
 
-                for (offset in ADJACENT_OFFSETS) {
-                    val adjacentPosition = candidate + offset
+                for (direction in CARDINAL_DIRECTIONS) {
+                    val adjacentPosition = candidate + direction
 
                     if (adjacentPosition in heights) {
                         candidates += adjacentPosition
@@ -77,12 +74,5 @@ data class HeightMap(
 
     private companion object {
         private val HEIGHT_RANGE = 0..9
-
-        private val ADJACENT_OFFSETS = setOf(
-            NORTH,
-            EAST,
-            SOUTH,
-            WEST
-        )
     }
 }

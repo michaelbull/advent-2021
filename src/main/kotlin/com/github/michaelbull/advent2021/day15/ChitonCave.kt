@@ -1,10 +1,7 @@
 package com.github.michaelbull.advent2021.day15
 
 import com.github.michaelbull.advent2021.math.Vector2
-import com.github.michaelbull.advent2021.math.Vector2.Companion.EAST
-import com.github.michaelbull.advent2021.math.Vector2.Companion.NORTH
-import com.github.michaelbull.advent2021.math.Vector2.Companion.SOUTH
-import com.github.michaelbull.advent2021.math.Vector2.Companion.WEST
+import com.github.michaelbull.advent2021.math.Vector2.Companion.CARDINAL_DIRECTIONS
 import com.github.michaelbull.advent2021.math.Vector2IntMap
 import java.util.PriorityQueue
 
@@ -88,18 +85,9 @@ data class ChitonCave(
     }
 
     private fun adjacentRiskLevels(position: Vector2): Map<Vector2, Int> {
-        return ADJACENT_OFFSETS
+        return CARDINAL_DIRECTIONS
             .map { position + it }
             .filter { it in riskLevels }
             .associateWith(riskLevels::get)
-    }
-
-    private companion object {
-        private val ADJACENT_OFFSETS = setOf(
-            NORTH,
-            EAST,
-            SOUTH,
-            WEST
-        )
     }
 }
