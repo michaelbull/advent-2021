@@ -1,5 +1,7 @@
 package com.github.michaelbull.advent2021.math
 
+import kotlin.math.abs
+
 fun Triple<Int, Int, Int>.toVector3(): Vector3 {
     return Vector3(this)
 }
@@ -73,6 +75,14 @@ data class Vector3(
             x = this.x / other.x,
             y = this.y / other.y,
             z = this.z / other.z
+        )
+    }
+
+    fun abs(): Vector3 {
+        return copy(
+            x = abs(this.x),
+            y = abs(this.y),
+            z = abs(this.z)
         )
     }
 
