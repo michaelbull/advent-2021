@@ -1,5 +1,7 @@
 package com.github.michaelbull.advent2021.day21
 
+import com.github.michaelbull.advent2021.math.rem
+
 class DiracDice(
     private val a: Player,
     private val b: Player
@@ -64,7 +66,7 @@ class DiracDice(
     }
 
     private fun Player.move(amount: Int): Player {
-        val next = ((position + amount - 1) % TRACK_RANGE.last) + TRACK_RANGE.first
+        val next = (position + amount) % TRACK_RANGE
 
         return copy(
             position = next,

@@ -3,6 +3,7 @@ package com.github.michaelbull.advent2021.day15
 import com.github.michaelbull.advent2021.math.Vector2
 import com.github.michaelbull.advent2021.math.Vector2.Companion.CARDINAL_DIRECTIONS
 import com.github.michaelbull.advent2021.math.Vector2IntMap
+import com.github.michaelbull.advent2021.math.rem
 import java.util.PriorityQueue
 
 private val RISK_RANGE = 1..9
@@ -78,7 +79,7 @@ data class ChitonCave(
             val base = position / Vector2(width, height)
             val local = position % Vector2(width, height)
             val riskLevel = riskLevels[local]
-            ((riskLevel - 1 + base.x + base.y) % RISK_RANGE.last) + RISK_RANGE.first
+            (riskLevel + base.x + base.y) % RISK_RANGE
         }
 
         return copy(riskLevels = expandedRiskLevels)
