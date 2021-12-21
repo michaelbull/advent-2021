@@ -66,7 +66,7 @@ data class Image(
 
         for (enhancedY in enhanced.yRange) {
             for (enhancedX in enhanced.xRange) {
-                val address = StringBuilder()
+                var address = 0
 
                 repeat(3) { deltaY ->
                     repeat(3) { deltaX ->
@@ -74,12 +74,11 @@ data class Image(
                         val y = (enhancedY - 1) + (deltaY - 1)
                         val position = Vector2(x, y)
                         val lit = litPixels.getOrNull(position) ?: litBorder
-                        address.append(if (lit) '1' else '0')
+                        address = (address shl 1) or (if (lit) 1 else 0)
                     }
                 }
 
-                val addressBit = address.toString().toInt(2)
-                val enhancedLit = enhancement[addressBit] == '#'
+                val enhancedLit = enhancement[address] == '#'
                 val enhancedPosition = Vector2(enhancedX, enhancedY)
                 enhanced[enhancedPosition] = enhancedLit
             }
