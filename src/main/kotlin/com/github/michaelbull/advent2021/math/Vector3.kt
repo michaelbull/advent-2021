@@ -10,7 +10,7 @@ data class Vector3(
     val x: Int = 0,
     val y: Int = 0,
     val z: Int = 0
-) {
+) : Comparable<Vector3> {
 
     constructor(triple: Triple<Int, Int, Int>) : this(triple.first, triple.second, triple.third)
 
@@ -84,6 +84,38 @@ data class Vector3(
             y = abs(this.y),
             z = abs(this.z)
         )
+    }
+
+    fun coerceAtLeast(minimumValue: Vector3): Vector3 {
+        return copy(
+            x = x.coerceAtLeast(minimumValue.x),
+            y = y.coerceAtLeast(minimumValue.y),
+            z = z.coerceAtLeast(minimumValue.z),
+        )
+    }
+
+    fun coerceAtMost(maximumValue: Vector3): Vector3 {
+        return copy(
+            x = x.coerceAtMost(maximumValue.x),
+            y = y.coerceAtMost(maximumValue.y),
+            z = z.coerceAtMost(maximumValue.z),
+        )
+    }
+
+    operator fun rangeTo(other: Vector3): Vector3Range {
+        return Vector3Range(this, other)
+    }
+
+    override fun compareTo(other: Vector3): Int {
+        return when {
+            x < other.x -> -1
+            x > other.x -> +1
+            y < other.y -> -1
+            y > other.y -> +1
+            z < other.z -> -1
+            z > other.z -> +1
+            else -> 0
+        }
     }
 
     companion object {
