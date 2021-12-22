@@ -3,7 +3,7 @@ package com.github.michaelbull.advent2021.day22
 import com.github.michaelbull.advent2021.Puzzle
 import com.github.michaelbull.advent2021.math.Vector3
 
-object Day22 : Puzzle<Sequence<RebootStep>, Int>(day = 22) {
+object Day22 : Puzzle<Sequence<RebootStep>, Any>(day = 22) {
 
     override fun parse(input: Sequence<String>): Sequence<RebootStep> {
         return input.map(String::toRebootStep)
@@ -16,10 +16,10 @@ object Day22 : Puzzle<Sequence<RebootStep>, Int>(day = 22) {
 
     fun part1(steps: Sequence<RebootStep>): Int {
         val region = Vector3(-50, -50, -50)..Vector3(50, 50, 50)
-        return ReactorCore().apply(steps, region).enabledCount
+        return ReactorCore.apply(steps, region)
     }
 
-    fun part2(steps: Sequence<RebootStep>): Int {
-        return TODO()
+    fun part2(steps: Sequence<RebootStep>): Long {
+        return ReactorCore.apply(steps)
     }
 }

@@ -14,7 +14,7 @@ data class Vector2Range(
         get() = start.y == endInclusive.y
 
     val isDiagonal: Boolean
-        get() = xDelta == yDelta
+        get() = abs(xDelta) == abs(yDelta)
 
     val xRange: IntRange
         get() = start.x..endInclusive.x
@@ -23,10 +23,10 @@ data class Vector2Range(
         get() = start.y..endInclusive.y
 
     val xDelta: Int
-        get() = abs(start.x - endInclusive.x)
+        get() = endInclusive.x - start.x
 
     val yDelta: Int
-        get() = abs(start.y - endInclusive.y)
+        get() = endInclusive.y - start.y
 
     override fun contains(value: Vector2): Boolean {
         return value.x in xRange && value.y in yRange
@@ -38,6 +38,10 @@ data class Vector2Range(
 
     override fun isEmpty(): Boolean {
         return xDelta < 0 || yDelta < 0
+    }
+
+    fun isNotEmpty(): Boolean {
+        return !isEmpty()
     }
 
     private inner class Vector2Iterator : Iterator<Vector2> {

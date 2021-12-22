@@ -1,7 +1,5 @@
 package com.github.michaelbull.advent2021.math
 
-import kotlin.math.abs
-
 data class Vector3Range(
     override val start: Vector3,
     override val endInclusive: Vector3
@@ -17,13 +15,19 @@ data class Vector3Range(
         get() = start.z..endInclusive.z
 
     val xDelta: Int
-        get() = abs(start.x - endInclusive.x)
+        get() = endInclusive.x - start.x
 
     val yDelta: Int
-        get() = abs(start.y - endInclusive.y)
+        get() = endInclusive.y - start.y
 
     val zDelta: Int
-        get() = abs(start.z - endInclusive.z)
+        get() = endInclusive.z - start.z
+
+    fun coerceIn(range: Vector3Range): Vector3Range {
+        val coercedStart = start.coerceAtLeast(range.start)
+        val coercedEndInclusive = endInclusive.coerceAtMost(range.endInclusive)
+        return coercedStart..coercedEndInclusive
+    }
 
     override fun contains(value: Vector3): Boolean {
         return value.x in xRange && value.y in yRange && value.z in zRange
@@ -33,14 +37,12 @@ data class Vector3Range(
         return xDelta < 0 || yDelta < 0 || zDelta < 0
     }
 
-    override fun iterator(): Iterator<Vector3> {
-        return Vector3Iterator()
+    fun isNotEmpty(): Boolean {
+        return !isEmpty()
     }
 
-    fun coerceIn(range: Vector3Range): Vector3Range {
-        val coercedStart = start.coerceAtLeast(range.start)
-        val coercedEndInclusive = endInclusive.coerceAtMost(range.endInclusive)
-        return coercedStart..coercedEndInclusive
+    override fun iterator(): Iterator<Vector3> {
+        return Vector3Iterator()
     }
 
     private inner class Vector3Iterator : Iterator<Vector3> {
