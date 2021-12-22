@@ -14,6 +14,7 @@ import com.github.michaelbull.advent2021.day19.Day19
 import com.github.michaelbull.advent2021.day2.Day2
 import com.github.michaelbull.advent2021.day20.Day20
 import com.github.michaelbull.advent2021.day21.Day21
+import com.github.michaelbull.advent2021.day22.Day22
 import com.github.michaelbull.advent2021.day3.Day3
 import com.github.michaelbull.advent2021.day4.Day4
 import com.github.michaelbull.advent2021.day5.Day5
@@ -44,7 +45,8 @@ fun main() {
         Day18,
         Day19,
         Day20,
-        Day21
+        Day21,
+        Day22
     )
 
     for (puzzle in puzzles) {
