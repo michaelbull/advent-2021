@@ -28,20 +28,33 @@ data class Vector2Range(
     val yDelta: Int
         get() = endInclusive.y - start.y
 
-    override fun contains(value: Vector2): Boolean {
-        return value.x in xRange && value.y in yRange
-    }
-
     override fun iterator(): Iterator<Vector2> {
         return Vector2Iterator()
     }
 
+    override fun contains(value: Vector2): Boolean {
+        return value.x in xRange && value.y in yRange
+    }
+
     override fun isEmpty(): Boolean {
-        return xDelta < 0 || yDelta < 0
+        return start.x > endInclusive.x || start.y > endInclusive.y
     }
 
     fun isNotEmpty(): Boolean {
         return !isEmpty()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is Vector2Range && (isEmpty() && other.isEmpty() ||
+            start == other.start && endInclusive == other.endInclusive)
+    }
+
+    override fun hashCode(): Int {
+        return if (isEmpty()) -1 else 31 * start.hashCode() + endInclusive.hashCode()
+    }
+
+    override fun toString(): String {
+        return "$start..$endInclusive"
     }
 
     private inner class Vector2Iterator : Iterator<Vector2> {

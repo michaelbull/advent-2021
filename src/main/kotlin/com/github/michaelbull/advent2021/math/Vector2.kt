@@ -95,6 +95,10 @@ data class Vector2(
         }
     }
 
+    override fun toString(): String {
+        return "[$x, $y]"
+    }
+
     companion object {
         val ZERO = Vector2(0, 0)
         val NORTH = Vector2(0, 1)

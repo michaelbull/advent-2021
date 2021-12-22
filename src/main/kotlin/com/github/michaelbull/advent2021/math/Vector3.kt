@@ -118,6 +118,10 @@ data class Vector3(
         }
     }
 
+    override fun toString(): String {
+        return "[$x, $y, $z]"
+    }
+
     companion object {
         val ZERO = Vector3(0, 0, 0)
     }

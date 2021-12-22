@@ -29,20 +29,33 @@ data class Vector3Range(
         return coercedStart..coercedEndInclusive
     }
 
+    override fun iterator(): Iterator<Vector3> {
+        return Vector3Iterator()
+    }
+
     override fun contains(value: Vector3): Boolean {
         return value.x in xRange && value.y in yRange && value.z in zRange
     }
 
     override fun isEmpty(): Boolean {
-        return xDelta < 0 || yDelta < 0 || zDelta < 0
+        return start.x > endInclusive.x || start.y > endInclusive.y || start.z > endInclusive.z
     }
 
     fun isNotEmpty(): Boolean {
         return !isEmpty()
     }
 
-    override fun iterator(): Iterator<Vector3> {
-        return Vector3Iterator()
+    override fun equals(other: Any?): Boolean {
+        return other is Vector3Range && (isEmpty() && other.isEmpty() ||
+            start == other.start && endInclusive == other.endInclusive)
+    }
+
+    override fun hashCode(): Int {
+        return if (isEmpty()) -1 else 31 * start.hashCode() + endInclusive.hashCode()
+    }
+
+    override fun toString(): String {
+        return "$start..$endInclusive"
     }
 
     private inner class Vector3Iterator : Iterator<Vector3> {
