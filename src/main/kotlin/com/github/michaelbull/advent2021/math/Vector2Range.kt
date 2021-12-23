@@ -44,6 +44,12 @@ data class Vector2Range(
         return !isEmpty()
     }
 
+    fun coerceIn(range: Vector2Range): Vector2Range {
+        val coercedStart = start.coerceAtLeast(range.start)
+        val coercedEndInclusive = endInclusive.coerceAtMost(range.endInclusive)
+        return coercedStart..coercedEndInclusive
+    }
+
     override fun equals(other: Any?): Boolean {
         return other is Vector2Range && (isEmpty() && other.isEmpty() ||
             start == other.start && endInclusive == other.endInclusive)

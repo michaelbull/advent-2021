@@ -54,18 +54,24 @@ data class ChitonCave(
             val position = queue.poll()
             val lowestRiskLevel = lowestRiskLevels[position]
 
+            if (position == to) {
+                return lowestRiskLevel
+            }
+
             for ((adjacentPosition, adjacentRiskLevel) in adjacentRiskLevels(position)) {
                 val lowestAdjacentRiskLevel = lowestRiskLevels[adjacentPosition]
                 val cumulativeRiskLevel = lowestRiskLevel + adjacentRiskLevel
 
                 if (cumulativeRiskLevel < lowestAdjacentRiskLevel) {
                     lowestRiskLevels[adjacentPosition] = cumulativeRiskLevel
+
+                    queue -= adjacentPosition
                     queue += adjacentPosition
                 }
             }
         }
 
-        return lowestRiskLevels[to]
+        throw IllegalArgumentException()
     }
 
     fun expand(times: Int): ChitonCave {

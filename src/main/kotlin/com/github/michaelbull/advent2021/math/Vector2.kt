@@ -81,6 +81,20 @@ data class Vector2(
         )
     }
 
+    fun coerceAtLeast(minimumValue: Vector2): Vector2 {
+        return copy(
+            x = x.coerceAtLeast(minimumValue.x),
+            y = y.coerceAtLeast(minimumValue.y)
+        )
+    }
+
+    fun coerceAtMost(maximumValue: Vector2): Vector2 {
+        return copy(
+            x = x.coerceAtMost(maximumValue.x),
+            y = y.coerceAtMost(maximumValue.y)
+        )
+    }
+
     operator fun rangeTo(other: Vector2): Vector2Range {
         return Vector2Range(this, other)
     }

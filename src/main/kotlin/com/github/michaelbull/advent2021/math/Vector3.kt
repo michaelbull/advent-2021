@@ -90,7 +90,7 @@ data class Vector3(
         return copy(
             x = x.coerceAtLeast(minimumValue.x),
             y = y.coerceAtLeast(minimumValue.y),
-            z = z.coerceAtLeast(minimumValue.z),
+            z = z.coerceAtLeast(minimumValue.z)
         )
     }
 
@@ -98,7 +98,7 @@ data class Vector3(
         return copy(
             x = x.coerceAtMost(maximumValue.x),
             y = y.coerceAtMost(maximumValue.y),
-            z = z.coerceAtMost(maximumValue.z),
+            z = z.coerceAtMost(maximumValue.z)
         )
     }
 
