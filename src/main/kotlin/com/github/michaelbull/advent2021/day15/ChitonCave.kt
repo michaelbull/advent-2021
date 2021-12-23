@@ -64,8 +64,6 @@ data class ChitonCave(
 
                 if (cumulativeRiskLevel < lowestAdjacentRiskLevel) {
                     lowestRiskLevels[adjacentPosition] = cumulativeRiskLevel
-
-                    queue -= adjacentPosition
                     queue += adjacentPosition
                 }
             }

@@ -75,8 +75,6 @@ data class Burrow(
 
                 if (lowestPotentialCost == null || cumulativeCost < lowestPotentialCost) {
                     costs[burrow] = cumulativeCost
-
-                    queue -= burrow
                     queue += burrow
                 }
             }
