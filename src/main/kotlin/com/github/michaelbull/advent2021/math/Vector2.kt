@@ -81,6 +81,13 @@ data class Vector2(
         )
     }
 
+    operator fun rem(range: Vector2Range): Vector2 {
+        return copy(
+            x = this.x % range.xRange,
+            y = this.y % range.yRange
+        )
+    }
+
     fun coerceAtLeast(minimumValue: Vector2): Vector2 {
         return copy(
             x = x.coerceAtLeast(minimumValue.x),
